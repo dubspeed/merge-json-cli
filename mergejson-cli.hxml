@@ -1,0 +1,29 @@
+
+common.hxml
+
+--each
+
+# Neko
+--neko bin/merge-json.n
+
+# Java
+--next
+--library hxjava
+--java build/java
+--cmd cp build/java/Main.jar bin/merge-json-java.jar
+
+# Python
+--next
+--python bin/merge-json.py
+
+# Node JS
+--next
+-lib hxnodejs
+--dce full
+--js bin/merge-json.js
+
+# c++ target for current platform
+--next
+--library hxcpp
+--cpp build/cpp
+--cmd cp build/cpp/Main bin/merge-json-native

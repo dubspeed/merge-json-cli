@@ -1,0 +1,9 @@
+{
+    "value1": {
+        "thing": "a_thing"
+    },
+    "array": [
+        "a_value",
+        "another_one"
+    ]
+}

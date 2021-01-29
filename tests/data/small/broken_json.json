@@ -1,0 +1,12 @@
+{
+    // this is a comment, not allowed in json, btw
+    a: 3,
+    b: [
+        1,
+        2,
+        3
+    ],
+    "c": {
+        "a": 'thing',
+    },
+}

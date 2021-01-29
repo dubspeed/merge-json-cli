@@ -1,0 +1,7 @@
+-cp src
+-m Main
+--library haxe-files
+--library hxargs
+--library mergejson
+--library tjson
+-D analyzer-optimize

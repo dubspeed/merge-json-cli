@@ -1,0 +1,10 @@
+{
+    "value1": {
+        "thing": "has a value"
+    },
+    "array": [
+        "entry in an array"
+    ],
+    "value3": 23,
+    "value4": true
+}

@@ -1,0 +1,4 @@
+mergejson-cli.hxml
+
+# Run Test via Neko
+--cmd neko bin/merge-json -v --dir tests/data --glob **/*.json -o build/output.json
