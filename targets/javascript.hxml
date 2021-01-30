@@ -1,0 +1,6 @@
+../common.hxml
+
+# Node JS
+--library hxnodejs
+--dce full
+--js bin/merge-json.js

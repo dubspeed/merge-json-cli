@@ -1,0 +1,5 @@
+../common.hxml
+# Java
+--library hxjava
+--java build/java
+--cmd cp build/java/Main.jar bin/merge-json-java.jar

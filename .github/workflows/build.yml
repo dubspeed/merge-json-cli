@@ -1,0 +1,43 @@
+name: BuildAndTest
+
+on:
+  # Triggers the workflow on push or pull request events but only for the main branch
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - uses: actions/checkout@v2
+
+      - name: Install Haxe
+        run: |
+          set -ex
+          sudo add-apt-repository ppa:haxe/releases -y
+          sudo apt-get update
+          sudo apt-get install haxe -y
+          mkdir ~/haxelib && haxelib setup ~/haxelib
+
+      - name: Install dependencies
+        run: |
+          set -ex
+          haxelib --always --quiet install all
+
+      - name: Build It!
+        run: |
+          set -ex
+          haxe mergejson-cli.hxml
+
+      - name: Test It!
+        run: |
+          set -ex
+          mkdir build
+          haxe tests.hxml
