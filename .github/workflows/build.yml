@@ -1,17 +1,10 @@
-name: BuildAndTest
+name: Build Binary
 
 on:
-  # Triggers the workflow on push or pull request events but only for the main branch
-  push:
-    branches: [ main ]
-  pull_request:
-    branches: [ main ]
-
-  # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
 
 jobs:
-  build:
+  linux-build:
     runs-on: ubuntu-latest
 
     steps:
@@ -26,18 +19,71 @@ jobs:
           sudo apt-get install haxe -y
           mkdir ~/haxelib && haxelib setup ~/haxelib
 
+      - name: Cache haxelib libraries
+        uses: actions/cache@v2
+        with:
+          path: |
+            ~/haxelib
+          key: ${{ runner.os }}-haxelib-${{ hashFiles('**/haxelib.json') }}
+          restore-keys: |
+            ${{ runner.os }}-haxelib-
+
       - name: Install dependencies
         run: |
           set -ex
           haxelib --always --quiet install all
 
-      - name: Build It!
-        run: |
-          set -ex
-          haxe mergejson-cli.hxml
-
-      - name: Test It!
+      - name: Build native binary
         run: |
           set -ex
           mkdir build
-          haxe tests.hxml
+          mkdir bin
+          haxelib --always --quiet install hxcpp
+          haxe targets/cpp.hxml -cmd "cp build/cpp/Main bin/merge-json-${{ runner.os }}"
+
+      - name: Archive build artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: ${{ runner.os }}-binary
+          path: bin/*
+
+  mac-build:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Install Haxe
+        run: |
+          set -ex
+          brew install npm
+          sudo npm install -g lix
+          lix download haxe 4.1.5
+          lix use haxe 4.1.5
+
+      - name: Cache haxelib libraries
+        uses: actions/cache@v2
+        with:
+          path: |
+            ~/haxelib
+          key: ${{ runner.os }}-haxelib-${{ hashFiles('**/haxelib.json') }}
+          restore-keys: |
+            ${{ runner.os }}-haxelib-
+
+      - name: Install dependencies
+        run: |
+          set -ex
+          haxelib --always --quiet install all
+
+      - name: Build native binary
+        run: |
+          set -ex
+          mkdir build
+          mkdir bin
+          haxelib --always --quiet install hxcpp
+          haxe targets/cpp.hxml -cmd "cp build/cpp/Main bin/merge-json-${{ runner.os }}"
+
+      - name: Archive build artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: ${{ runner.os }}-binary
+          path: bin/*
