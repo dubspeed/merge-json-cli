@@ -1,4 +1,4 @@
-../common.hxml
+common.hxml
 # Python
 --python bin/merge-json.py
 

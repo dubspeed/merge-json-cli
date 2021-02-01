@@ -1,4 +1,4 @@
-../common.hxml
+common.hxml
 # Java
 --library hxjava
 --java build/java
