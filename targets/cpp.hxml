@@ -1,0 +1,5 @@
+../common.hxml
+# c++ target for current platform
+--library hxcpp
+--cpp build/cpp
+--cmd cp build/cpp/Main bin/merge-json-native
